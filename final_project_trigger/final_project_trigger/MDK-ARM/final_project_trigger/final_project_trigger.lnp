@@ -1,0 +1,25 @@
+--cpu Cortex-M3
+"final_project_trigger\startup_stm32f103x6.o"
+"final_project_trigger\main.o"
+"final_project_trigger\gpio.o"
+"final_project_trigger\tim.o"
+"final_project_trigger\stm32f1xx_it.o"
+"final_project_trigger\stm32f1xx_hal_msp.o"
+"final_project_trigger\stm32f1xx_hal_gpio_ex.o"
+"final_project_trigger\stm32f1xx_hal_tim.o"
+"final_project_trigger\stm32f1xx_hal_tim_ex.o"
+"final_project_trigger\stm32f1xx_hal.o"
+"final_project_trigger\stm32f1xx_hal_rcc.o"
+"final_project_trigger\stm32f1xx_hal_rcc_ex.o"
+"final_project_trigger\stm32f1xx_hal_gpio.o"
+"final_project_trigger\stm32f1xx_hal_dma.o"
+"final_project_trigger\stm32f1xx_hal_cortex.o"
+"final_project_trigger\stm32f1xx_hal_pwr.o"
+"final_project_trigger\stm32f1xx_hal_flash.o"
+"final_project_trigger\stm32f1xx_hal_flash_ex.o"
+"final_project_trigger\stm32f1xx_hal_exti.o"
+"final_project_trigger\system_stm32f1xx.o"
+--library_type=microlib --strict --scatter "final_project_trigger\final_project_trigger.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "final_project_trigger.map" -o final_project_trigger\final_project_trigger.axf
