@@ -28,6 +28,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <math.h>
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -76,7 +77,10 @@ typedef struct {
 float right = 0;
 float left = 0;
 float delta = 0;
+float speed1 = 0;
+float speed2 = 0;
 uint8_t state = 0;
+uint8_t cmd = 0;
 VOL sonic_left = {
 		.rec = {0},
 		.max_v = 0,
@@ -94,12 +98,12 @@ VOL sonic_right = {
 };
 
 PID pid = {
-		.kp = 1000,
+		.kp = 900,
 		.ki = 0,
-		.kd = 0,
-		.pmax = 1000,
+		.kd = 100,
+		.pmax = 700,
 		.imax = 0,
-		.dmax = 0,
+		.dmax = 600,
 		.sum = 0,
 		.this_error = 0,
 };
@@ -154,6 +158,7 @@ int main(void)
   MX_ADC2_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
+	HAL_UART_Transmit_IT(&huart1, (uint8_t *)&("Power On\n"), sizeof("Power On\n"));
 	HAL_TIM_Base_Start(&htim3);
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
@@ -174,9 +179,16 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		
+		//HAL_UART_Receive_IT(&huart1, (uint8_t *)&cmd, sizeof(cmd));
 		MainControlLoop();
-		
+		//SetChassisSpeed(speed1, speed2);
+		if (cmd == 'n' || cmd == 'N') {
+			SetChassisSpeed(0,0);
+		}
+		else if (cmd == 'y' || cmd == 'Y') {
+			MainControlLoop();
+		}
+		//MainControlLoop();
   }
   /* USER CODE END 3 */
 }
@@ -230,9 +242,9 @@ void SystemClock_Config(void)
 /**
 *** The IT callback functions
 */
-void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 		if (huart->Instance == huart1.Instance) {
-				
+				HAL_UART_Transmit_IT(&huart1, (uint8_t *)&("OK"), sizeof("OK"));
 		}
 }
 
@@ -323,27 +335,28 @@ float Calculate(PID *pid, float error) {
 */
 void MainControlLoop() {
 		//stop
+	/*
 		if (sonic_left.vpp > 1.2f || sonic_right.vpp > 1.20f) {
 				SetChassisSpeed(0,0);
 				state = 0;
 				return;
 		}
 		//forward
-		if (fabs(sonic_left.vpp - sonic_right.vpp) < 0.6) {
-				SetChassisSpeed(450,450);
+		if (fabs(sonic_left.vpp - sonic_right.vpp) < 0.4) {
+				SetChassisSpeed(550,550);
 				state = 1;
 				return;
 		}
+	*/
 		//turn
-		else {
+		//else {
 			delta = sonic_left.vpp - sonic_right.vpp;
 			float out = Calculate(&pid, delta);
 			SetChassisSpeed(-out, out);
-			state = 2;
   
 
 
-		}			
+		//}			
 }
 /* USER CODE END 4 */
 

@@ -35,3 +35,4 @@ final_project\main.o: ../Inc/tim.h
 final_project\main.o: ../Inc/usart.h
 final_project\main.o: ../Inc/gpio.h
 final_project\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+final_project\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
