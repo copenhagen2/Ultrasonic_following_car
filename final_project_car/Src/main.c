@@ -179,8 +179,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		//HAL_UART_Receive_IT(&huart1, (uint8_t *)&cmd, sizeof(cmd));
-		MainControlLoop();
+		HAL_UART_Receive_IT(&huart1, (uint8_t *)&cmd, sizeof(cmd));
+		//MainControlLoop();
 		//SetChassisSpeed(speed1, speed2);
 		if (cmd == 'n' || cmd == 'N') {
 			SetChassisSpeed(0,0);
@@ -335,7 +335,7 @@ float Calculate(PID *pid, float error) {
 */
 void MainControlLoop() {
 		//stop
-	/*
+	
 		if (sonic_left.vpp > 1.2f || sonic_right.vpp > 1.20f) {
 				SetChassisSpeed(0,0);
 				state = 0;
@@ -347,16 +347,16 @@ void MainControlLoop() {
 				state = 1;
 				return;
 		}
-	*/
+	
 		//turn
-		//else {
+		else {
 			delta = sonic_left.vpp - sonic_right.vpp;
 			float out = Calculate(&pid, delta);
 			SetChassisSpeed(-out, out);
   
 
 
-		//}			
+		}			
 }
 /* USER CODE END 4 */
 
